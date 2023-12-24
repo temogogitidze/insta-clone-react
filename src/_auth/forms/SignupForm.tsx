@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
     Form,
@@ -25,6 +25,8 @@ import { useUserContext } from "@/context/AuthContext";
 
 const SignupForm = () => {
     const { toast } = useToast();
+    const navigate = useNavigate();
+
     const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
     const { mutateAsync: createUserAccount, isLoading: isCreatingUser } =
@@ -61,11 +63,18 @@ const SignupForm = () => {
 
         if (!session) {
             return toast({
-                title: "Sign in failed. Please try again",
+                title: "Sign up failed. Please try again",
             });
         }
 
         const isLoggedIn = await checkAuthUser();
+
+        if (isLoggedIn) {
+            form.reset();
+            navigate("/");
+        } else {
+            return toast({ title: "Sign up failed. Please try again later" });
+        }
         console.log(newUser);
     }
 
