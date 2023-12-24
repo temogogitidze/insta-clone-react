@@ -21,9 +21,11 @@ import {
     useCreateUserAccount,
     useSignInAccount,
 } from "@/lib/react-query/queriesAndMutations";
+import { useUserContext } from "@/context/AuthContext";
 
 const SignupForm = () => {
     const { toast } = useToast();
+    const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
     const { mutateAsync: createUserAccount, isLoading: isCreatingUser } =
         useCreateUserAccount();
@@ -62,6 +64,8 @@ const SignupForm = () => {
                 title: "Sign in failed. Please try again",
             });
         }
+
+        const isLoggedIn = await checkAuthUser();
         console.log(newUser);
     }
 
