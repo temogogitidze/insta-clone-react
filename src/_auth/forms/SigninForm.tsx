@@ -26,8 +26,7 @@ const SigninForm = () => {
 
     const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
-    const { mutateAsync: signInAccount, isPending: isSigningIn } =
-        useSignInAccount();
+    const { mutateAsync: signInAccount } = useSignInAccount();
 
     const form = useForm<z.infer<typeof SigninValidation>>({
         resolver: zodResolver(SigninValidation),
@@ -45,7 +44,7 @@ const SigninForm = () => {
 
         if (!session) {
             return toast({
-                title: "Sign up failed. Please try again",
+                title: "Sign in failed. Please try again",
             });
         }
 
